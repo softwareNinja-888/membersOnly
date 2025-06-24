@@ -15,5 +15,14 @@
 	      <% }) %>
 	    </ul>
 	  <% } %>
+	<% if (user.is_member === true) { %>
+		<div class='text-center mx-auto text-4xl py-8 '>
+			Congratulations <%=user.first_name%> you are an exclusive Member
+		</div>
+	<% } else {%>
+		<div class='text-center mx-auto text-4xl py-8 '>
+			Join Club by entering secret code: canijointheclub
+		</div>
+	<% }%>
 </body>
 </html>

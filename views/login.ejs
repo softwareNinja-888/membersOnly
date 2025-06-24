@@ -17,7 +17,16 @@
 	  <% } %>
 
 	<div class="text-center mx-auto text-4xl py-8 ">Login</div>	
-	<div class="text-center mx-auto text-xl py-8 ">To join Club login first</div>	
+	<div class="text-center mx-auto text-xl py-8 ">To join Club login first</div>
+
+	<% if (messages && messages.error) { %>
+	  <ul class="text-red-600 text-center">
+	    <% messages.error.forEach(msg => { %>
+	      <li><%= msg %></li>
+	    <% }) %>
+	  </ul>
+	<% } %>
+	
 
 	 <form method="POST" action="/login" class="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg space-y-4">
 

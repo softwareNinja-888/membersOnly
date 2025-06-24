@@ -5,6 +5,8 @@ const session = require('express-session');
 const pgSession = require("connect-pg-simple")(session);
 const mainRouter = require('./routes/mainRouter')
 const passport = require('passport');
+const flash = require('express-flash');
+
 
 
 
@@ -36,6 +38,7 @@ app.use(
   })
 );
 
+app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session());
 app.use((req, res, next) => {

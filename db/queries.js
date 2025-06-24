@@ -24,7 +24,14 @@ async function addUser(formData){
 	}
 }
 
-
+async function getHash(name){
+	try{
+		const {rows} = await pool.query("SELECT * FROM membership_codes WHERE name = $1",[name])
+		return rows[0]
+	} catch(err){
+		console.log('Failed fetching at hash of membership codes:',err)
+	}
+}
 async function getUser(email){
 	try{
 		const {rows} = await pool.query("SELECT * FROM users WHERE email = $1", [email])
@@ -55,6 +62,34 @@ async function InsertMembership(data){
 		return err
 	}
 }
+
+
+async function createUser(username,hash,salt,isAdmin=false){
+	try{
+	} catch(err){
+		console.log('Failed inserting into the database:',err)
+	}
+}
+
+async function setUserAsMember(userId,codeId) {
+	try{
+		await pool.query('UPDATE users SET is_member = true WHERE id = $1', [userId])
+		await pool.query('UPDATE membership_codes SET usage_count = usage_count + 1 WHERE id = $1', [codeId])
+	}catch(err){
+		console.log('Couldnt set user as member')
+		return err
+	}
+}
+
+async function incrementCodeUsage(codeId) {
+	try{
+		await pool.query('UPDATE membership_codes SET usage_count = usage_count + 1 WHERE id = $1', [codeId])
+	}catch(err){
+		console.log('Couldnt increment code usage')
+		return err
+	}
+}
+
 // async function createUser(username,hash,salt,isAdmin=false){
 // 	try{
 // 	} catch(err){
@@ -66,5 +101,8 @@ module.exports={
 	addUser,
 	getUser,
 	getUserId,
-	InsertMembership
+	getHash,
+	InsertMembership,
+	setUserAsMember,
+	incrementCodeUsage,
 }

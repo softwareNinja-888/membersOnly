@@ -15,7 +15,7 @@ passport.use(new LocalStrategy(customFields,
       const user = await db.getUser(email);
 
       if (!user) {
-        return done(null, false);
+        return done(null, false,{ message: "Email/username not found" });
       }
 
       const match = await bcrypt.compare(password, user.password_hash);

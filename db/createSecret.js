@@ -7,7 +7,7 @@ const memberPass = process.env.MEMBER_CODE;
 
 async function main() {
     const hashedCodeAdmin = await bcrypt.hash(adminPass, 12);
-    const hashedCodeMember = await bcrypt.hash(adminPass, 12);
+    const hashedCodeMember = await bcrypt.hash(memberPass, 12);
 
 
     const dataAdmin = {

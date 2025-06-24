@@ -35,13 +35,13 @@ const validateUser = [
   // Confirm Password
   // READ ON CUSTOM validator
   body('confirmPassword')
-    .custom((value, { req }) => value === req.body.password)
+    .custom((value, { req }) => value === req.body.pw)
     .withMessage('Passwords do not match'),
 ];
 
 const validatePasswordJoin = [
   // Password
-  body('password')
+  body('pw')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters'),
 ]
@@ -89,8 +89,16 @@ exports.joinSubmit = [
       })
     }
     try {
-      console.log('Submitted:',req.user)
-      res.send('Works')
+      // CHECK IF PASSWORD IS CORRECT
+      const memberHash = await db.getHash('Member')
+      const match = await bcrypt.compare(req.body.pw, memberHash.hashed_code);
+
+      if (!match){
+        res.redirect('join')
+      } else{
+        await db.setUserAsMember(req.user.id,memberHash.id)
+        res.redirect('/')
+      }
     } catch (err) {
       console.error(err);
       res.status(500).send("Error updating the room.");
